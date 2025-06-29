@@ -1,0 +1,10 @@
+# Archivos específicos de Eclipse
+.classpath
+.project
+.settings/
+
+# Build y dependencia de Gradle
+/build/
+/.gradle/
+
+/bin/

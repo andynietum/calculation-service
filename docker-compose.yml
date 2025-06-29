@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: calculation-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+
+      SERVER_PORT: 8080
+      # === Spring Datasource ===
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/calculation
+      SPRING_DATASOURCE_USERNAME: calculation
+      SPRING_DATASOURCE_PASSWORD: calculation
+
+      # === Redis ===
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
+      # === Custom property ===
+      PERCENTAGE_CACHE_TTL: PT30M
+
+      # === Resilience4j Retry ===
+      RESILIENCE4J_RETRY_INSTANCES_PORCENTAJERETRY_MAXATTEMPTS: 3
+
+      # === Resilience4j RateLimiter ===
+      RESILIENCE4J_RATELIMITER_INSTANCES_PERCENTAGECALCULATION_LIMIT_FOR_PERIOD: 3
+      RESILIENCE4J_RATELIMITER_INSTANCES_PERCENTAGECALCULATION_LIMIT_REFRESH_PERIOD: 60s
+      RESILIENCE4J_RATELIMITER_INSTANCES_PERCENTAGECALCULATION_TIMEOUT_DURATION: 0	  
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:15
+    container_name: pgdb
+    environment:
+      POSTGRES_DB: calculation
+      POSTGRES_USER: calculation
+      POSTGRES_PASSWORD: calculation
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

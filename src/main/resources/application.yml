@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/calculation
+    username: calculation
+    password: calculation
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  application:
+    name: calculation-service
+
+resilience4j:
+  retry:
+    instances:
+      porcentajeRetry:
+        maxAttempts: 3
+        waitDuration: 1s
+  ratelimiter:
+    instances:
+      percentageCalculation:
+        limit-for-period: 3
+        limit-refresh-period: 60s
+        timeout-duration: 0
+
+percentage.cache.ttl: PT60S
+
+server:
+  port: 18080
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "info" ]
+
+api:
+  docs:
+    title: Calculation Service API
+    description: API para calcular la suma de dos números y a ese resultado sumarle el porcentaje obtenido desde un servicio remoto.
+    version: 1.0.0
+    contact-email: andynietum@gmail.com
+    contact-name: Andrés Nieto
+    license-name: Apache 2.0
+    license-url: https://www.apache.org/licenses/LICENSE-2.0.html
