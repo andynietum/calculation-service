@@ -27,13 +27,7 @@ git clone https://github.com/andynietum/calculation-service.git
 
 cd calculation-service
 ```
-### 2. Buildear el Servicio y Levantar el entorno local
-#### 2.1 Buildear el servicio
-Para hacer el build es necesario tener instalado **Gradle 9+**. Desde una consola, y parados en el directorio raiz del proyecto ejecutar el siguiente comando:
-```bash
-gradle clean build
-```
-#### 2.2 Levantar el entorno local 
+### 2. Buildear Imagen del Servicio y Levantar el entorno local
 Para poder correr el servicio en un entorno local es necesario tener instalado **Docker** y **Docker Compose**. Desde una consola, y parados en el directorio raiz del proyecto ejecutar el siguiente comando:
 ```bash
 docker-compose up --build
